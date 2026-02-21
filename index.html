@@ -1,0 +1,231 @@
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    background:black;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/* başlık alanı */
+.header{
+    position:absolute;
+    top:35px;
+    width:100%;
+    text-align:center;
+    color:white;
+}
+
+h1{
+    font-size:48px;
+    margin:0;
+}
+
+/* büyütüldü */
+.sub{
+    font-size:26px;
+    opacity:.9;
+    margin-top:6px;
+}
+
+/* büyütüldü */
+.info{
+    margin-top:10px;
+    font-size:18px;
+    opacity:.85;
+}
+
+/* müzik butonu */
+.musicBtn{
+    position:absolute;
+    top:40px;
+    right:40px;
+    padding:10px 18px;
+    border:none;
+    border-radius:20px;
+    background:white;
+    cursor:pointer;
+    font-size:14px;
+}
+
+/* yıldız BÜYÜDÜ */
+.star{
+    position:absolute;
+    background:white;
+    border-radius:50%;
+    cursor:pointer;
+    box-shadow:0 0 6px white,0 0 12px white;
+    animation:twinkle 1.8s infinite alternate;
+}
+
+@keyframes twinkle{
+    from{opacity:.4}
+    to{opacity:1}
+}
+
+/* söz BÜYÜDÜ */
+.quote{
+    position:absolute;
+    color:white;
+    font-size:26px;
+    font-weight:bold;
+    pointer-events:none;
+    opacity:0;
+    transform:translate(-50%,-50%) scale(.7);
+    text-shadow:0 0 10px white,0 0 25px white;
+    animation:quoteAnim 2.5s forwards;
+}
+
+@keyframes quoteAnim{
+    0%{opacity:0; transform:translate(-50%,-50%) scale(.5);}
+    40%{opacity:1; transform:translate(-50%,-50%) scale(1.15);}
+    100%{opacity:0; transform:translate(-50%,-50%) scale(1);}
+}
+
+/* kayan yıldız */
+.shoot{
+    position:absolute;
+    width:3px;
+    height:150px;
+    background:linear-gradient(white,transparent);
+    transform:rotate(45deg);
+    animation:shoot 1.2s linear forwards;
+}
+
+@keyframes shoot{
+    from{transform:translate(0,0) rotate(45deg); opacity:1;}
+    to{transform:translate(450px,450px) rotate(45deg); opacity:0;}
+}
+
+.shootText{
+    position:absolute;
+    color:white;
+    font-size:20px;
+    text-shadow:0 0 10px white;
+    animation:fadeOut 2s forwards;
+}
+
+@keyframes fadeOut{
+    from{opacity:1}
+    to{opacity:0}
+}
+</style>
+
+<div class="header">
+    <h1>Koala Mevsimi</h1>
+    <div class="sub">Bazı şeyler söylenemez</div>
+    <div class="info">Yıldızların üstüne basmayı unutma ✨</div>
+</div>
+
+<button class="musicBtn" onclick="toggleMusic()">🎵 Müziği Başlat</button>
+
+<audio id="music" loop>
+    <source src="muzik.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+const music=document.getElementById("music");
+const btn=document.querySelector(".musicBtn");
+
+function toggleMusic(){
+    if(music.paused){
+        music.play();
+        btn.innerText="🔇 Müziği Durdur";
+    }else{
+        music.pause();
+        btn.innerText="🎵 Müziği Başlat";
+    }
+}
+
+const normalQuotes = [
+"Sesini duymadan geçen günler eksik",
+"İçimde sana ait kapanmayan bir pencere var",
+"Özlemek bazen bir şehrin ışıklarını söndürür",
+"Sana denk gelmeyen her gün biraz yarım",
+"Beklemek yoruyor ama vazgeçmek daha çok",
+"İçimde sana dönmek isteyen bir taraf var",
+"Kalbim seni unutmayı hiç öğrenmedi",
+"Zamana bıraktım ama kalbim bırakmadı",
+"Yokluğun bile varlığın kadar gerçek",
+"Adını duymasam bile hissin burada"
+];
+
+const deepQuotes = [
+"Geceler seni düşününce ağırlaşıyor",
+"Sana söyleyemediklerim içimde yankı",
+"Kalabalıkta bile yalnız hissettiren sensin",
+"Özlemek kalbin sessiz konuşmasıdır",
+"Sana ulaşamamak içimde yarım bir hikâye",
+"İçimde susturamadığım bir ses var",
+"Bazı boşluklar sadece bir kişiyle dolar",
+"Sensiz geçen zaman takvime yazılmıyor"
+];
+
+const rareQuotes = [
+"Bir gün karşılaşır mıyız bilmiyorum ama hissin hâlâ burada",
+"Bazı insanlar gider ama içindeki yerini terk etmez",
+"Sen uzaktayken bile kalbim seni ev biliyor",
+"Özlemek umutla acının aynı yerde buluşması",
+"Seni beklemek zamanla değil sabırla ölçülüyor"
+];
+/* yıldız oluştur */
+for(let i=0;i<80;i++){
+    let star=document.createElement("div");
+    star.className="star";
+
+    let size=Math.random()*7+5; /* ÇOK BÜYÜK */
+    star.style.width=size+"px";
+    star.style.height=size+"px";
+
+    star.style.left=Math.random()*100+"vw";
+    star.style.top=Math.random()*100+"vh";
+
+    star.onclick=(e)=>{
+
+    let random=Math.random();
+    let text;
+
+    if(random<0.6){
+        text=normalQuotes[Math.floor(Math.random()*normalQuotes.length)];
+    }
+    else if(random<0.9){
+        text=deepQuotes[Math.floor(Math.random()*deepQuotes.length)];
+    }
+    else{
+        text=rareQuotes[Math.floor(Math.random()*rareQuotes.length)];
+    }
+
+    let q=document.createElement("div");
+    q.className="quote";
+    q.innerText=text;
+    q.style.left=e.pageX+"px";
+    q.style.top=e.pageY+"px";
+    document.body.appendChild(q);
+    setTimeout(()=>q.remove(),2500);
+};
+
+    document.body.appendChild(star);
+}
+
+txt.innerText = deepQuotes[Math.floor(Math.random()*deepQuotes.length)];
+    let s=document.createElement("div");
+    s.className="shoot";
+    s.style.left=Math.random()*80+"vw";
+    s.style.top=Math.random()*40+"vh";
+    document.body.appendChild(s);
+
+    let txt=document.createElement("div");
+    txt.className="shootText";
+    txt.innerText=quotes[Math.floor(Math.random()*quotes.length)];
+    txt.style.left=s.style.left;
+    txt.style.top=s.style.top;
+    document.body.appendChild(txt);
+
+    setTimeout(()=>{
+        s.remove();
+        txt.remove();
+    },2000);
+
+},6000);
+
+</script>
