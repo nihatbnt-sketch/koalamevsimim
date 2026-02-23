@@ -12,24 +12,22 @@ background:linear-gradient(#020111,#000);
 font-family:Arial;
 color:white;
 text-align:center;
-min-height:200vh;
+min-height:220vh;
 overflow-x:hidden;
 }
 
-/* BAŞLIK */
 h1{margin-top:90px;font-size:36px}
 .alt{font-size:22px}
 .info{font-size:18px;opacity:.8;margin-bottom:40px}
 
-/* YILDIZ */
 .star{
 position:absolute;
-font-size:20px;
+font-size:17px;
 cursor:pointer;
+color:#fff;
 }
 .visitor{color:#b26bff}
 
-/* SÖZ */
 .quote{
 position:absolute;
 background:rgba(0,0,0,.75);
@@ -46,7 +44,6 @@ animation:fade 4s forwards;
 100%{opacity:0}
 }
 
-/* KALP */
 .heart{
 position:absolute;
 color:#ff4d6d;
@@ -57,7 +54,6 @@ animation:heart .8s forwards;
 100%{opacity:0;transform:translateY(-25px) scale(1.4)}
 }
 
-/* KUTU */
 .box{
 position:fixed;
 top:15px;
@@ -70,21 +66,9 @@ padding:10px;
 border-radius:14px;
 backdrop-filter:blur(6px);
 }
-.box input{
-width:65%;
-padding:6px;
-border-radius:8px;
-border:none;
-}
-.box button{
-padding:6px 10px;
-border:none;
-border-radius:8px;
-background:#b26bff;
-color:white;
-}
+.box input{width:65%;padding:6px;border-radius:8px;border:none}
+.box button{padding:6px 10px;border:none;border-radius:8px;background:#b26bff;color:white}
 
-/* MANDALİNA */
 .mandalina{cursor:pointer}
 </style>
 </head>
@@ -97,27 +81,46 @@ color:white;
 <button onclick="addVisitor()">Ekle</button>
 </div>
 
-<h1>Koala Mevsimi <span class="mandalina" onclick="alert('Kalbim vazgeçmedi sadece yoruldu')">🍊</span></h1>
+<h1>Koala Mevsimi <span class="mandalina" onclick="alert('Kalbim senden vazgeçmedi… sadece yoruldu')">🍊</span></h1>
 <div class="alt">Bazı şeyler söylenemez</div>
 <div class="info">Yıldızların üstüne basmayı unutma</div>
 
 <script>
 
-/* ANA SÖZLER */
 const sozler=[
 "Özlemek, adını içimde sessizce haykırmaktır.",
+"Gözlerin uzakta ama kalbin hâlâ avuçlarımda gibi.",
 "Hasret geceleri konuşan sessizliğim oldu.",
-"Sesini unutmadım sadece susmayı öğrendim."
+"Sen yoksan kalabalıklar bile yalnızlıktır.",
+"Mesafeler sadece bedenleri ayırır kalpleri değil.",
+"Özlemek bir şarkıda boğulmak gibidir.",
+"Gülüşünü hatırladıkça içimde bir ev yanıyor.",
+"Sensizlik en gürültülü acı.",
+"Adını duymak kalbime dokunan rüzgar.",
+"Hasret gözlerimin senden habersiz dolmasıdır.",
+"Yarım kalan bir masalda yaşıyorum.",
+"Kalbim sana kavuşacağı günü ezberliyor.",
+"Sensizliğe alışmak nefessiz yaşamaktır.",
+"Sarılırsam bütün hasretim gözyaşı olacak.",
+"Yokluğun içimi boşaltıyor.",
+"Sesini unutmadım sadece susuyorum.",
+"Sen beni yarım bıraktın.",
+"Düşünceler uykumu çalıyor.",
+"İçimde hâlâ sen varsın.",
+"Kalbim sustu çünkü değişmiyorsun.",
+"Özlemek alışkanlık oldu.",
+"Kendime geç kaldığım için kırgınım.",
+"Mutlu olduğun yerde değilim ama hâlâ seninleyim.",
+"Hiçbir mevsim bahar olmadı."
 ];
 
-/* YILDIZ */
 function createStar(text,visitor=false,top=null,left=null){
 const star=document.createElement("div");
 star.className="star";
 if(visitor) star.classList.add("visitor");
 star.innerHTML="★";
 
-const t=top ?? Math.random()*180+20;
+const t=top ?? Math.random()*200+10;
 const l=left ?? Math.random()*95;
 
 star.style.top=t+"vh";
@@ -146,21 +149,21 @@ return {text,top:t,left:l};
 }
 
 /* ANA YILDIZLAR */
-sozler.forEach(s=>createStar(s));
+sozler.forEach(s=>{
+createStar(s);
+createStar(s);   /* yoğunluk artırma */
+});
 
-/* ZİYARETÇİ LOAD */
+/* ZİYARETÇİ */
 const saved=JSON.parse(localStorage.getItem("visitorStars")||"[]");
 saved.forEach(s=>createStar(s.text,true,s.top,s.left));
 
-/* EKLE */
 function addVisitor(){
 const val=document.getElementById("visitorText").value;
 if(!val) return;
-
 const star=createStar(val,true);
 saved.push(star);
 localStorage.setItem("visitorStars",JSON.stringify(saved));
-
 document.getElementById("visitorText").value="";
 }
 
