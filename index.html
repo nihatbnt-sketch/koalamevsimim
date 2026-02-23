@@ -3,110 +3,125 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>koala mevsimi</title>
+<title>Koala Mevsimi</title>
 
 <style>
 body{
 margin:0;
-background:black;
 overflow:hidden;
-font-family:Arial, sans-serif;
+background:black;
+font-family:Arial,Helvetica,sans-serif;
 color:white;
 text-align:center;
 }
 
-/* BAŞLIK */
-.title{
+/* YAZI ALANI */
+.content{
+position:relative;
+z-index:5;
+margin-top:120px;
+padding:20px;
+}
+
+h1{
 font-size:42px;
-margin-top:40px;
+margin-bottom:5px;
 }
 
-.mandalina{
-cursor:pointer;
-font-size:40px;
-margin-left:10px;
-transition:.3s;
-}
-.mandalina:hover{transform:scale(1.2) rotate(10deg);}
-
-/* ALT YAZILAR */
-.alt{
-font-size:26px;
-margin-top:10px;
-opacity:.9;
+.sub{
+font-size:22px;
+opacity:.8;
 }
 
 .info{
+margin-top:15px;
 font-size:20px;
 opacity:.7;
-margin-bottom:20px;
 }
 
-/* MÜZİK BUTON */
-.music{
+/* MANDALINA */
+.orange{
+font-size:34px;
+cursor:pointer;
+margin-left:10px;
+}
+
+/* MÜZİK */
+.musicBtn{
 position:fixed;
 top:20px;
 right:20px;
-padding:10px 20px;
+z-index:20;
+background:#ffffff20;
 border:none;
-border-radius:20px;
-background:white;
+color:white;
+padding:10px 16px;
+border-radius:12px;
 cursor:pointer;
+font-size:16px;
 }
 
-/* YILDIZLAR */
+/* YILDIZ */
 .star{
 position:absolute;
-color:white;
-font-size:26px;
+font-size:28px;
 cursor:pointer;
+z-index:1;
 animation:parla 2s infinite alternate;
 }
 
 @keyframes parla{
-from{opacity:.3; transform:scale(.8);}
-to{opacity:1; transform:scale(1.4);}
+from{opacity:.4;transform:scale(1);}
+to{opacity:1;transform:scale(1.3);}
 }
 
-/* SÖZ */
-.soz{
-position:fixed;
-top:55%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:28px;
-opacity:0;
-transition:1s;
-max-width:80%;
+/* YILDIZ YAZISI */
+.starText{
+position:absolute;
+background:rgba(0,0,0,.75);
+padding:12px 18px;
+border-radius:14px;
+font-size:20px;
+z-index:10;
+pointer-events:none;
+animation:fade 3s forwards;
+}
+
+@keyframes fade{
+0%{opacity:0}
+10%{opacity:1}
+90%{opacity:1}
+100%{opacity:0}
 }
 
 /* KAYAN YILDIZ */
-.kayan{
-position:fixed;
-top:0;
-left:-100px;
-font-size:30px;
-animation:kay 1s linear;
+.shoot{
+position:absolute;
+color:white;
+font-size:18px;
+animation:kay 1.2s linear;
 }
+
 @keyframes kay{
-to{transform:translate(120vw,60vh);}
+from{transform:translate(0,0)}
+to{transform:translate(-200px,200px);opacity:0}
 }
+
 </style>
 </head>
-
 <body>
 
-<h1 class="title">
-koala mevsimi <span class="mandalina" onclick="mandalina()">🍊</span>
-</h1>
-
-<div class="alt">bazı şeyler söylenemez</div>
+<div class="content">
+<h1>Koala Mevsimi <span class="orange" onclick="mandalina()">🍊</span></h1>
+<div class="sub">bazı şeyler söylenemez</div>
 <div class="info">yıldızların üstüne basmayı unutma</div>
+</div>
 
-<button class="music" onclick="muzik()">müziği başlat</button>
-<audio id="music" src="muzik.mp3" loop></audio>
+<button class="musicBtn" onclick="muzik()">Müziği Başlat / Durdur</button>
 
-<div id="soz" class="soz"></div>
+<audio id="music" loop>
+<source src="muzik.mp3" type="audio/mp3">
+</audio>
 
 <script>
 
@@ -116,58 +131,66 @@ let m=document.getElementById("music");
 m.paused ? m.play() : m.pause();
 }
 
-/* YILDIZ SÖZLERİ */
+/* MANDALINA SÖZ */
+function mandalina(){
+alert("Kalbim senden vazgeçmedi… sadece dayanacak gücü kalmadı.");
+}
+
+/* SÖZLER */
 const sozler=[
-"seni unutmaya çalışmıyorum artık… sadece içimde acımadan hatırlamak istiyorum.",
-"bazı geceler geçmiyor, çünkü sen hâlâ içimde uyanıksın.",
-"seni özlemek artık bir alışkanlık değil, içimde kalan tek gerçek.",
-"gittiğin yerde mutlu ol… ben yokluğunda yaşamayı öğreniyorum.",
-"sana söyleyemediklerim içimde büyüyüp sessizliğe dönüştü.",
-"insan vazgeçmiyor… sadece yoruluyor.",
-"sen yokken bile kalbim seni var sanmaya devam etti.",
-"en çok da gelmeyeceğini bildiğim halde beklemek kırdı beni.",
-"seninle değil, sensizliğinle yaşamayı öğrendim.",
-"bir gün dönsen bile içimdeki yerini bulamayacaksın."
+"Yokluğun artık canımı yakmıyor… sadece içimi boşaltıyor.",
+"Sesini unutmadım ama artık duymaya hakkım yok.",
+"Ben seni kaybetmedim… sen beni yarım bıraktın.",
+"Geceler değil, düşünceler uykumu çalıyor.",
+"İçimde hâlâ sen varsın ama eskisi gibi değil.",
+"Kalbim sustu… çünkü anlatınca değişmiyorsun.",
+"Özlemek artık alışkanlık oldu.",
+"Sana kızmıyorum… kendime geç kaldığım için kırgınım.",
+"Mutlu olduğun yerde değilim ama hâlâ seninleyim.",
+"Bir gün dönersen… beni aynı yerde bulamayacaksın."
 ];
 
 /* YILDIZ OLUŞTUR */
 for(let i=0;i<45;i++){
-let s=document.createElement("div");
-s.className="star";
-s.innerHTML="★";
-s.style.left=Math.random()*100+"vw";
-s.style.top=Math.random()*100+"vh";
 
-s.onclick=()=>{
-let kutu=document.getElementById("soz");
-kutu.innerHTML=sozler[Math.floor(Math.random()*sozler.length)];
-kutu.style.opacity=1;
+let star=document.createElement("div");
+star.className="star";
+star.innerHTML="★";
 
-let k=document.createElement("div");
-k.className="kayan";
-k.innerHTML="☄";
-document.body.appendChild(k);
-setTimeout(()=>k.remove(),1000);
+let x=Math.random()*window.innerWidth;
+let y=Math.random()*window.innerHeight;
 
-setTimeout(()=>kutu.style.opacity=0,4000);
+/* YAZI ALANINDAN UZAK TUT */
+if(y>120 && y<420){ y+=250; }
+
+star.style.left=x+"px";
+star.style.top=y+"px";
+
+star.onclick=(e)=>{
+
+/* KAYAN YILDIZ */
+let shoot=document.createElement("div");
+shoot.className="shoot";
+shoot.innerHTML="✦";
+shoot.style.left=x+"px";
+shoot.style.top=y+"px";
+document.body.appendChild(shoot);
+setTimeout(()=>shoot.remove(),1200);
+
+/* YAZI */
+let text=document.createElement("div");
+text.className="starText";
+text.innerText=sozler[Math.floor(Math.random()*sozler.length)];
+text.style.left=(x-60)+"px";
+text.style.top=(y-50)+"px";
+document.body.appendChild(text);
+setTimeout(()=>text.remove(),3000);
+
 };
 
-document.body.appendChild(s);
+document.body.appendChild(star);
 }
 
-/* MANDALİNA GİZLİ SÖZ */
-function mandalina(){
-let kutu=document.getElementById("soz");
-kutu.innerHTML=`
-kalbim senden vazgeçmedi…<br>
-sadece dayanacak gücü kalmadı.<br><br>
-ve içimde hâlâ sen varsın,<br>
-ama artık beni mutlu ettiğin yerde değil.
-`;
-kutu.style.opacity=1;
-setTimeout(()=>kutu.style.opacity=0,6000);
-}
 </script>
-
 </body>
 </html>
