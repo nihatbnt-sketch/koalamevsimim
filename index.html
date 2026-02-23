@@ -7,177 +7,195 @@
 
 <style>
 body{
-  margin:0;
-  overflow:hidden;
-  background: radial-gradient(#0b0b1a,#000);
-  font-family:Arial, Helvetica, sans-serif;
-  color:white;
-  text-align:center;
+margin:0;
+background:linear-gradient(#020111,#000);
+font-family:Arial,Helvetica,sans-serif;
+overflow:hidden;
+color:white;
+text-align:center;
 }
 
-/* içerik */
-.content{
-  position:relative;
-  z-index:5;
-  margin-top:90px;
-}
+/* BAŞLIK */
+h1{margin-top:30px;font-size:40px}
+.alt{font-size:22px;margin-bottom:10px}
+.info{font-size:18px;opacity:.8;margin-bottom:20px}
 
-h1{font-size:40px;}
-.alt{font-size:22px; opacity:.8;}
-
-.bilgi{margin-top:10px; font-size:20px; opacity:.7}
-
-/* yıldızlar */
+/* YILDIZ */
 .star{
-  position:absolute;
-  color:white;
-  font-size:10px;   /* daha küçük */
-  cursor:pointer;
-  z-index:2;
-  animation:parla 2s infinite alternate;
+position:absolute;
+color:#fff;
+font-size:22px;
+cursor:pointer;
+transition:.3s;
+user-select:none;
 }
-@keyframes heartUp{
-  0%{opacity:1; transform:translateY(0) scale(1);}
-  100%{opacity:0; transform:translateY(-90px) scale(1.6);}
+.star:hover{transform:scale(1.2)}
+.visitor{color:#b26bff}
+
+/* SÖZ */
+.quote{
+position:absolute;
+background:rgba(0,0,0,.7);
+padding:10px 14px;
+border-radius:12px;
+font-size:18px;
+max-width:240px;
+animation:fade 4s forwards;
+}
+@keyframes fade{
+0%{opacity:0;transform:translateY(10px)}
+10%{opacity:1}
+90%{opacity:1}
+100%{opacity:0;transform:translateY(-10px)}
 }
 
-
-/* söz kutusu */
-.star-text{
-  position:absolute;
-  z-index:10;
-  background:rgba(0,0,0,.75);
-  padding:10px 16px;
-  border-radius:14px;
-  font-size:18px;
+/* KIRIK KALP */
+.heart{
+position:absolute;
+color:#ff4d6d;
+font-size:22px;
+animation:heart .8s forwards;
+}
+@keyframes heart{
+0%{opacity:1;transform:scale(.5)}
+100%{opacity:0;transform:translateY(-20px) scale(1.4)}
 }
 
-function kirikKalp(x,y){
-  let h=document.createElement("div");
-  h.className="heart";
-  h.innerHTML="💔";
-  h.style.left=(x-10)+"px";
-  h.style.top=(y-10)+"px";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),1600);
+/* KAYAN YILDIZ */
+.shoot{
+position:absolute;
+color:white;
+animation:shoot 1s linear;
 }
-@keyframes heartUp{
-  0%{opacity:1; transform:translateY(0) scale(1);}
-  100%{opacity:0; transform:translateY(-70px) scale(1.4);}
+@keyframes shoot{
+0%{opacity:1;transform:translate(0,0)}
+100%{opacity:0;transform:translate(200px,120px)}
 }
 
-/* mandalina */
+/* MANDALİNA */
 .mandalina{
-  font-size:30px;
-  cursor:pointer;
+cursor:pointer;
+display:inline-block;
+font-size:28px;
+animation:beat 2s infinite;
+}
+@keyframes beat{
+0%,100%{transform:scale(1)}
+50%{transform:scale(1.15)}
 }
 
-/* gece modu */
-.dark{
-  background: radial-gradient(#02020a,#000);
+/* ZİYARETÇİ KUTUSU */
+.box{
+position:fixed;
+top:15px;
+left:15px;
+background:rgba(0,0,0,.6);
+padding:12px;
+border-radius:14px;
+backdrop-filter:blur(6px);
+}
+.box input{
+padding:6px;
+border-radius:8px;
+border:none;
+outline:none;
+}
+.box button{
+padding:6px 10px;
+border:none;
+border-radius:8px;
+background:#b26bff;
+color:white;
+cursor:pointer;
 }
 
-.toggle{
-  position:fixed;
-  right:15px;
-  bottom:15px;
-  padding:8px 14px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-}
-
+audio{display:none}
 </style>
 </head>
 
 <body>
 
-<div class="content">
-  <h1>Koala Mevsimi <span class="mandalina" onclick="mandalinaMesaj()">🍊</span></h1>
-  <div class="alt">bazı şeyler söylenemez</div>
-  <div class="bilgi">yıldızların üstüne basmayı unutma</div>
+<div class="box">
+<div style="font-size:14px;margin-bottom:5px">Sen de bir söz ekle</div>
+<input id="visitorText" placeholder="kalbinden geçen...">
+<button onclick="addVisitor()">Ekle</button>
 </div>
 
-<button class="toggle" onclick="gece()">🌙 gece modu</button>
+<h1>Koala Mevsimi <span class="mandalina" onclick="mandalina()">🍊</span></h1>
+<div class="alt">Bazı şeyler söylenemez</div>
+<div class="info">Yıldızların üstüne basmayı unutma</div>
+
+<audio id="music" loop>
+<source src="music.mp3">
+</audio>
 
 <script>
 
-/* SÖZLER */
+/* SENİN SÖZLER */
 const sozler=[
 "Özlemek, adını içimde sessizce haykırmaktır.",
-"Gözlerin uzakta, ama kalbin hâlâ avuçlarımda gibi.",
-"Hasretin, geceleri en çok konuşan sessizliğim oldu.",
-"Sen yoksan, kalabalıklar bile yalnızlıktır.",
-"Mesafeler sadece bedenleri ayırır, kalpleri değil.",
-"Özlemek bazen bir şarkıda boğulmak gibidir.",
-"Gülüşünü hatırladıkça içimde bir ev yanıyor.",
-"Seninle susmak bile mutluluktu, sensizlik en gürültülü acı.",
-"Adını duymak bile kalbime dokunan bir rüzgâr.",
-"Hasret, gözlerimin senden habersiz dolmasıdır.",
-"Seni düşünmek, yarım kalan bir masalın içinde yaşamaktır.",
-"Kalbim sana kavuşacağı günü ezberliyor.",
-"Sensizliğe alışmak, nefes almadan yaşamaya çalışmak gibi.",
-"Bir gün sarılırsam, bütün hasretim gözyaşı olacak.",
-"Yokluğun artık canımı yakmıyor… sadece içimi boşaltıyor.",
-"Sesini unutmadım ama artık duymaya hakkım yok.",
-"Ben seni kaybetmedim… sen beni yarım bıraktın.",
-"Geceler değil, düşünceler uykumu çalıyor.",
+"Gözlerin uzakta ama kalbin hâlâ içimde.",
+"Hasret geceleri konuşan sessizliğim oldu.",
+"Sen yoksan kalabalıklar bile yalnız.",
+"Sesini unutmadım sadece susmayı öğrendim.",
 "İçimde hâlâ sen varsın ama eskisi gibi değil.",
-"Kalbim sustu… çünkü anlatınca değişmiyorsun."
+"Kalbim sustu çünkü anlatınca değişmiyorsun."
 ];
 
-/* yıldız üret */
-for(let i=0;i<70;i++){
-  let star=document.createElement("div");
-  star.className="star";
-  star.innerHTML="✦";
+/* YILDIZ OLUŞTUR */
+function createStar(text,visitor=false){
+const star=document.createElement("div");
+star.className="star";
+if(visitor) star.classList.add("visitor");
+star.innerHTML="★";
+star.style.top=Math.random()*80+15+"vh";
+star.style.left=Math.random()*95+"vw";
 
-  let x=Math.random()*window.innerWidth;
-  let y=Math.random()*window.innerHeight;
+star.onclick=(e)=>{
+const q=document.createElement("div");
+q.className="quote";
+q.innerText=text;
+q.style.top=star.offsetTop-10+"px";
+q.style.left=star.offsetLeft+20+"px";
+document.body.appendChild(q);
+setTimeout(()=>q.remove(),4000);
 
-  if(y>160 && y<420) y+=200; // yazı bölgesinden uzaklaştır
-
-  star.style.left=x+"px";
-  star.style.top=y+"px";
-
-  star.onclick=(e)=>{
-    sozGoster(e.pageX,e.pageY);
-    kirikKalp(e.pageX,e.pageY);
-  }
-
-  document.body.appendChild(star);
+const heart=document.createElement("div");
+heart.className="heart";
+heart.innerText="💔";
+heart.style.top=star.offsetTop+"px";
+heart.style.left=star.offsetLeft+"px";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),800);
+}
+document.body.appendChild(star);
 }
 
-/* söz göster */
-function sozGoster(x,y){
-  let box=document.createElement("div");
-  box.className="star-text";
-  box.innerText=sozler[Math.floor(Math.random()*sozler.length)];
-  box.style.left=x+"px";
-  box.style.top=y+"px";
-  document.body.appendChild(box);
-  setTimeout(()=>box.remove(),3000);
+/* BAŞLANGIÇ YILDIZLARI */
+sozler.forEach(s=>createStar(s));
+
+/* ZİYARETÇİ SÖZ */
+function addVisitor(){
+const val=document.getElementById("visitorText").value;
+if(!val) return;
+createStar(val,true);
+document.getElementById("visitorText").value="";
 }
 
-/* kırık kalp efekti */
-function kirikKalp(x,y){
-  let h=document.createElement("div");
-  h.className="heart";
-  h.innerHTML="💔";
-  h.style.left=x+"px";
-  h.style.top=y+"px";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),1400);
-}
+/* KAYAN YILDIZ */
+setInterval(()=>{
+const s=document.createElement("div");
+s.className="shoot";
+s.innerHTML="✦";
+s.style.top=Math.random()*50+"vh";
+s.style.left=Math.random()*50+"vw";
+document.body.appendChild(s);
+setTimeout(()=>s.remove(),1000);
+},5000);
 
-/* mandalina mesaj */
-function mandalinaMesaj(){
-  alert("kalbim senden vazgeçmedi… sadece dayanacak gücü kalmadı.");
-}
-
-/* gece modu */
-function gece(){
-  document.body.classList.toggle("dark");
+/* MANDALİNA */
+function mandalina(){
+alert("Kalbim senden vazgeçmedi… sadece yoruldu.");
 }
 
 </script>
